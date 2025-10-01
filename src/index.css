@@ -1,112 +1,49 @@
-﻿/* ===== Reset & base ===== */
-:root {
-  --bg: #0e1013;
-  --panel: #14171c;
-  --panel-2: #191d23;
-  --text: #e8ecf1;
-  --muted: #9aa6b2;
-  --accent: #3aa0ff;
-  --ring: rgba(58,160,255,.45);
-  --border: #222831;
-  --grid: rgba(255,255,255,.12);
-  --success: #19d27e;
+﻿/* ===== Base ===== */
+:root{
+  --bg:#0e1013;        /* app shell (kept dark UI) */
+  --panel:#14171c;
+  --panel-2:#191d23;
+  --text:#e8ecf1;
+  --muted:#9aa6b2;
+  --border:#222831;
+  --ring:rgba(58,160,255,.45);
+  --accent:#3aa0ff;
+  --success:#19d27e;
 }
-* { box-sizing: border-box; }
-html, body, #root { height: 100%; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-}
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
 
-/* ===== Layout wrappers ===== */
-.app {
-  max-width: 1200px;
-  margin: 24px auto 48px;
-  padding: 0 16px;
-}
-.app h1 {
-  margin: 0 0 12px;
-  font-size: 28px;
-  letter-spacing:.2px;
-}
+/* ===== Wrapper ===== */
+.app{max-width:1200px;margin:24px auto 48px;padding:0 16px}
+.app h1{margin:0 0 12px;font-size:28px}
 
-/* ===== Controls row ===== */
-.controls {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 12px;
-  margin-bottom: 14px;
+/* ===== Controls ===== */
+.controls{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin:10px 0 12px}
+.ctrl{grid-column:span 3;display:flex;flex-direction:column;gap:6px}
+.ctrl label{font-size:12px;color:var(--muted)}
+.input,.select{
+  height:40px;border-radius:10px;border:1px solid var(--border);
+  background:var(--panel);color:var(--text);padding:0 12px;outline:none
 }
-.ctrl { grid-column: span 3; display:flex; flex-direction:column; gap:6px; }
-.ctrl label { font-size: 12px; color: var(--muted); }
+.input:focus,.select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
+.switches{display:flex;gap:14px;flex-wrap:wrap;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--panel)}
+.switches label{display:flex;gap:8px;align-items:center;font-size:13px}
+.switches input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent)}
+.span2{grid-column:span 2}.span3{grid-column:span 3}.span4{grid-column:span 4}
 
-.input, .select {
-  height: 40px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--panel);
-  color: var(--text);
-  padding: 0 12px;
-  outline: none;
-}
-.input:focus, .select:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--ring);
-}
+/* ===== Stat cards (unified) ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:12px 0}
+.card{background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--border);border-radius:14px;padding:14px 16px}
+.card h4{margin:0 0 6px;font-weight:600;color:var(--muted);font-size:13px}
+.card .big{font-size:20px;font-weight:700;letter-spacing:.2px}
+.card .pct{display:block;margin-top:4px;color:var(--success);font-weight:700}
 
-.radio-row {
-  display:flex; gap:12px; align-items:center; height:40px;
-  border-radius:10px; border:1px solid var(--border); background:var(--panel);
-  padding: 0 10px;
-}
-.radio-row label{ display:flex; align-items:center; gap:6px; font-size:13px; }
-
-/* Quick grid spans */
-.span2 { grid-column: span 2; }
-.span3 { grid-column: span 3; }
-.span4 { grid-column: span 4; }
-
-/* ===== Switches / checkboxes ===== */
-.switches {
-  display:flex; flex-wrap:wrap; gap:14px;
-  padding: 10px 12px; border-radius:10px; border:1px solid var(--border);
-  background: var(--panel);
-}
-.switches label{ display:flex; gap:8px; align-items:center; font-size:13px; color: var(--text); }
-.switches input[type="checkbox"]{ width:16px; height:16px; accent-color: var(--accent); }
-
-/* ===== Stat cards ===== */
-.stat-row{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin: 12px 0 10px; }
-.card{
-  background: linear-gradient(180deg, var(--panel), var(--panel-2));
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 14px 16px;
-}
-.card h4{ margin:0 0 6px; font-weight:600; color: var(--muted); font-size: 13px; }
-.card .big{ font-size: 20px; font-weight:700; letter-spacing:.2px; }
-.card .big .pct{ color: var(--success); opacity:.95; font-weight:700; margin-left: 6px; }
-
-/* ===== Chart container ===== */
-.chart-wrap{
-  background: var(--panel);
-  border:1px solid var(--border);
-  border-radius: 14px;
-  padding: 8px 6px 6px;
-}
-
-/* ===== Tooltip (works for most libs) ===== */
-.chart-tooltip{
-  background:#0b0e12; border:1px solid var(--border); color:var(--text);
-  padding:8px 10px; border-radius:10px; font-size:12px;
-}
+/* ===== Chart container: white background ===== */
+.chart-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;padding:8px}
+.recharts-wrapper{background:#fff}
 
 /* Small screens */
-@media (max-width: 880px){
-  .controls{ grid-template-columns: repeat(6,1fr); }
-  .span4{ grid-column: span 6; }
-  .span3, .span2{ grid-column: span 3; }
-  .stat-row{ grid-template-columns: 1fr; }
-}
+@media (max-width: 1100px){ .stat-grid{grid-template-columns:repeat(3,1fr)} }
+@media (max-width: 740px){ .controls{grid-template-columns:repeat(6,1fr)}
+  .ctrl{grid-column:span 3} .stat-grid{grid-template-columns:1fr} }

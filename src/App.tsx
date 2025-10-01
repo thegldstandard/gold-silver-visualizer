@@ -214,7 +214,7 @@ export default function App() {
         </div>
 
         <label style={{ display: "grid" }}>
-          <span>Gold → Silver ratio (≥)</span>
+          <span>Gold to Silver ratio</span>
           <input
             type="number"
             step="0.1"
@@ -224,7 +224,7 @@ export default function App() {
         </label>
 
         <label style={{ display: "grid" }}>
-          <span>Silver → Gold ratio (≤)</span>
+          <span>Silver to Gold ratio</span>
           <input
             type="number"
             step="0.1"
@@ -351,7 +351,7 @@ export default function App() {
                 dot={false}
                 strokeWidth={2}
                 stroke="#4E79A7"
-              />
+              / stroke="#e53935" dot={false}>
             )}
             {showGold && (
               <Line
@@ -362,7 +362,7 @@ export default function App() {
                 dot={false}
                 strokeWidth={2}
                 stroke="#D4AF37"
-              />
+              / stroke="#d4af37" dot={false}>
             )}
             {showSilver && (
               <Line
@@ -373,7 +373,7 @@ export default function App() {
                 dot={false}
                 strokeWidth={2}
                 stroke="#C0C0C0"
-              />
+              / stroke="#9aa6b2" dot={false}>
             )}
             {showRatio && (
               <Line
@@ -384,7 +384,7 @@ export default function App() {
                 dot={false}
                 strokeWidth={1}
                 stroke="#7E57C2"
-              />
+              / stroke="#000000" dot={false}>
             )}
 
             {/* Threshold guides on the ratio axis */}
@@ -405,3 +405,4 @@ export default function App() {
     </div>
   );
 }
+

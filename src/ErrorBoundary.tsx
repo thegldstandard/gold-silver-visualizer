@@ -1,21 +1,33 @@
 ﻿import React from "react";
 
-export class ErrorBoundary extends React.Component<{children: React.ReactNode}, {error?: any}> {
-  constructor(props:any){ super(props); this.state = { error: null }; }
-  static getDerivedStateFromError(error:any){ return { error }; }
-  componentDidCatch(error:any, info:any){ console.error("App crashed:", error, info); }
-  render(){
-    if (this.state.error) {
+type Props = { children: React.ReactNode };
+type State = { hasError: boolean; error?: any };
+
+export class ErrorBoundary extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError(error: any) {
+    return { hasError: true, error };
+  }
+  componentDidCatch(error: any, info: any) {
+    console.error("ErrorBoundary caught", error, info);
+  }
+  render() {
+    if (this.state.hasError) {
       return (
-        <div style={{padding:16,color:"#fff",background:"#111",fontFamily:"system-ui,Segoe UI,Roboto,Helvetica,Arial"}}>
-          <h2>Something went wrong</h2>
-          <div style={{whiteSpace:"pre-wrap",opacity:.9,marginTop:8,fontFamily:"ui-monospace,Consolas,monospace"}}>
-            {String(this.state.error)}
-          </div>
-          <div style={{opacity:.7,marginTop:8}}>Open DevTools → Console for details.</div>
+        <div style={{
+          maxWidth: 960, margin: "24px auto", padding: "16px",
+          borderRadius: 12, border: "1px solid #ffd4cc", background: "#fff3f0",
+          color: "#7a1a00", fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
+        }}>
+          <b>Something went wrong.</b>
+          <pre style={{ whiteSpace: "pre-wrap" }}>{String(this.state.error || "")}</pre>
+          <p>Open the browser Console for details.</p>
         </div>
       );
     }
-    return this.props.children as any;
+    return this.props.children;
   }
 }
