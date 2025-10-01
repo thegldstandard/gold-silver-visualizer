@@ -188,22 +188,16 @@ async function loadMetalPriceAPI(start: string, end: string, apiKey: string): Pr
   if (!j || !j.rates) throw new Error("Unexpected response: missing 'rates'");
 
   const rows: Row[] = [];
-  const keys = Object.keys(j.rates).sort();
-
-  if (keys.length && typeof j.rates[keys[0]] === 'object') {
-    for (const d of Object.keys(j.rates).sort()) {
+const keys = Object.keys(j.rates).sort();
+for (const d of keys) {
   const r = (j.rates as any)[d];
   const gold = (r.USDXAU ?? (r.XAU ? 1 / r.XAU : undefined)) as number | undefined;
   const silver = (r.USDXAG ?? (r.XAG ? 1 / r.XAG : undefined)) as number | undefined;
   if (Number.isFinite(gold) && Number.isFinite(silver)) {
     rows.push({ date: d, gold: Number(gold), silver: Number(silver) });
   }
-});
-  }
-}); });
-      }
-    }
-    return rows;
+}
+return rows;
   }
 
   ); };
@@ -260,7 +254,7 @@ async function loadMetalHistorySmart(start: string, end: string): Promise<Row[]>
       start,
       dayjs(haveFirst).subtract(1, 'day').format('YYYY-MM-DD'),
       DEFAULT_API_KEY,
-    );
+
     cached = mergeRows(extraBefore, cached);
   }
   if (end > haveLast) {
@@ -268,7 +262,7 @@ async function loadMetalHistorySmart(start: string, end: string): Promise<Row[]>
       dayjs(haveLast).add(1, 'day').format('YYYY-MM-DD'),
       end,
       DEFAULT_API_KEY,
-    );
+
     cached = mergeRows(cached, extraAfter);
   }
   writeHistoryCache(cached);
@@ -424,7 +418,7 @@ function simulate(
       heldMetal,
       heldOunces: ounces,
       switched,
-    });
+}
   }
   return out;
 }
@@ -435,10 +429,10 @@ export default function App() {
   const [rows, setRows] = useState<Row[]>([]);
   const [startDate, setStartDate] = useState<string>(() =>
     dayjs('1990-01-01').format('YYYY-MM-DD'),
-  );
+
   const [endDate, setEndDate] = useState<string>(() =>
     dayjs().format('YYYY-MM-DD'),
-  );
+
   const [startMetal, setStartMetal] = useState<'Gold-Silver'>('Gold');
   const [startAmount, setStartAmount] = useState<number>(10000);
   const [g2s, setG2S] = useState<string>('85');
@@ -548,7 +542,6 @@ export default function App() {
         parseNumOrUndefined(s2g || ''),
       ),
     [rows, startDate, endDate, startMetal, startAmount, g2s, s2g],
-  );
 
   const latest = sim.length ? sim[sim.length - 1] : undefined;
   const finalPortfolio = latest?.portfolio ?? 0;
@@ -897,8 +890,9 @@ export default function App() {
         .chart{height:440px}
       `}</style>
     </div>
-  );
+
 }
+
 
 
 
