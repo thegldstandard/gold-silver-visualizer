@@ -38,3 +38,4 @@ input[type="date"], input[type="number"], select, input[type="text"] {
 .hidden { display: none; }
 .row-file { display:flex; align-items:center; gap:8px; }
 .file-label { border:1px solid var(--border); padding:8px 10px; border-radius:8px; cursor:pointer; }
+html, body, #root { height: 100dvh; }

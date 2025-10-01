@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+﻿import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   LineChart,
   Line,
@@ -13,13 +13,13 @@ import dayjs from 'dayjs';
 import * as XLSX from 'xlsx';
 
 /**
- * App – Value Chart + Simple Toggles + Stats Boxes (FULL UPDATED)
+ * App â€“ Value Chart + Simple Toggles + Stats Boxes (FULL UPDATED)
  * - VALUE lines only (USD): Gold (buy & hold), Silver (buy & hold), My Portfolio.
- * - Optional translucent Gold–Silver Ratio overlay (purely visual; does NOT change value scale).
+ * - Optional translucent Goldâ€“Silver Ratio overlay (purely visual; does NOT change value scale).
  * - Four toggles only: Gold Value, Silver Value, My Portfolio, Gold-Silver Ratio.
  * - Auto-loads /public/data/prices.csv (or .xlsx). Falls back to MetalpriceAPI for gaps.
  * - Caches history in localStorage to reduce API calls and rate limits.
- * - Y‑axis never drops below 0.
+ * - Yâ€‘axis never drops below 0.
  */
 
 // ===== Types =====
@@ -37,7 +37,7 @@ type SimPoint = Row & {
   diffVsSilver: number; // (pp) portfolioPct - silverPct
   heldMetal: 'Gold' | 'Silver';
   heldOunces: number;
-  switched?: 'G→S' | 'S→G';
+  switched?: 'Gâ†’S' | 'Sâ†’G';
 };
 
 // ===== Consts =====
@@ -54,11 +54,11 @@ const bumpThrottle = (ms: number) => {
 };
 
 function fmtCurrency(n: number | undefined | null, dp = 2) {
-  if (n == null || !Number.isFinite(Number(n))) return '—';
+  if (n == null || !Number.isFinite(Number(n))) return 'â€”';
   return '$' + Number(n).toLocaleString(undefined, { maximumFractionDigits: dp });
 }
 function fmtPct(n: number | undefined | null, dp = 2) {
-  if (n == null || !Number.isFinite(Number(n))) return '—';
+  if (n == null || !Number.isFinite(Number(n))) return 'â€”';
   const v = Number(n);
   const sign = v > 0 ? '+' : v < 0 ? '' : '';
   return `${sign}${v.toFixed(dp)}%`;
@@ -380,23 +380,23 @@ function simulate(
 
     if (!noTriggers) {
       if (heldMetal === 'Gold') {
-        // Switch Gold → Silver the FIRST day the ratio meets/exceeds g2s.
-        // If it's the very first day and already >= g2s, we switch using day 1 prices (your example: 84.9 then 86 → use 86 day).
+        // Switch Gold â†’ Silver the FIRST day the ratio meets/exceeds g2s.
+        // If it's the very first day and already >= g2s, we switch using day 1 prices (your example: 84.9 then 86 â†’ use 86 day).
         const crossedUp = g2s != null && Number.isFinite(g2s) && ratio >= g2s && (i === 0 || prevRatio < g2s);
         if (crossedUp) {
           const value = ounces * r.gold; // use today's close
           ounces = value / r.silver;
           heldMetal = 'Silver';
-          switched = 'G→S';
+          switched = 'Gâ†’S';
         }
       } else {
-        // Switch Silver → Gold the FIRST day the ratio meets/falls to s2g.
+        // Switch Silver â†’ Gold the FIRST day the ratio meets/falls to s2g.
         const crossedDown = s2g != null && Number.isFinite(s2g) && ratio <= s2g && (i === 0 || prevRatio > s2g);
         if (crossedDown) {
           const value = ounces * r.silver; // use today's close
           ounces = value / r.gold;
           heldMetal = 'Gold';
-          switched = 'S→G';
+          switched = 'Sâ†’G';
         }
       }
     }
@@ -455,7 +455,7 @@ export default function App() {
   const [errorMsg, setErrorMsg] = useState<string>('');
   const autoTriedRef = useRef(false);
 
-  // Data bootstrapping: cache → /public/data → API (for gaps)
+  // Data bootstrapping: cache â†’ /public/data â†’ API (for gaps)
   useEffect(() => {
     (async () => {
       try {
@@ -620,7 +620,7 @@ export default function App() {
             {/* Ratio inputs */}
             <div className="border">
               <div className="row">
-                <label>Gold→Silver ratio</label>
+                <label>Goldâ†’Silver ratio</label>
                 <input
                   type="number"
                   step="0.1"
@@ -630,7 +630,7 @@ export default function App() {
                 />
               </div>
               <div className="row">
-                <label>Silver→Gold ratio</label>
+                <label>Silverâ†’Gold ratio</label>
                 <input
                   type="number"
                   step="0.1"
@@ -683,7 +683,7 @@ export default function App() {
             </div>
           </div>
 
-          {/* Stats — values with small % */}
+          {/* Stats â€” values with small % */}
           <div className="stats" style={{ marginTop: 16 }}>
             <div className="stat">
               <div className="label">Gold (buy & hold)</div>
@@ -722,9 +722,9 @@ export default function App() {
             </div>
           </div>
 
-          {/* Chart — VALUE lines + optional ratio overlay */}
+          {/* Chart â€” VALUE lines + optional ratio overlay */}
           <div className="chart" style={{ marginTop: 16 }}>
-            <ResponsiveContainer>
+            <ResponsiveContainer width="100%" height="100%">
               <LineChart data={sim} margin={{ top: 10, right: 30, left: 10, bottom: 10 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
@@ -808,7 +808,7 @@ export default function App() {
 
           <div className="muted" style={{ marginTop: 10 }}>
             Chart shows values (USD) for Gold (buy & hold), Silver (buy & hold), and My Portfolio.
-            Optional Gold‑Silver Ratio overlays in the background. Switches execute at end‑of‑day
+            Optional Goldâ€‘Silver Ratio overlays in the background. Switches execute at endâ€‘ofâ€‘day
             when ratio triggers are met.
           </div>
         </div>
@@ -842,3 +842,4 @@ export default function App() {
     </div>
   );
 }
+
