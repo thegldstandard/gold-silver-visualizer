@@ -16,7 +16,7 @@ import * as XLSX from 'xlsx';
  * App â€“ Value Chart + Simple Toggles + Stats Boxes (FULL UPDATED)
  * - VALUE lines only (USD): Gold (buy & hold), Silver (buy & hold), My Portfolio.
  * - Optional translucent Goldâ€“Silver Ratio overlay (purely visual; does NOT change value scale).
- * - Four toggles only: Gold Value, Silver Value, My Portfolio, Gold-Silver Ratio.
+ * - Four toggles only: Gold Value, Silver Value, My Portfolio, Gold->Silver ratio.
  * - Auto-loads /public/data/prices.csv (or .xlsx). Falls back to MetalpriceAPI for gaps.
  * - Caches history in localStorage to reduce API calls and rate limits.
  * - Yâ€‘axis never drops below 0.
@@ -472,7 +472,26 @@ export default function App() {
         console.error('merged loader failed', e);
       }
     })();
+      // Load prices from CSV first; fill gaps from API (only missing dates)
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const from = startDate;
+        const to = (typeof dayjs !== "undefined" ? dayjs().format("YYYY-MM-DD") : new Date().toISOString().slice(0,10));
+        const key =
+          (typeof window !== "undefined" && (window as any).METAL_API_KEY) ||
+          (import.meta as any).env?.VITE_METALPRICEAPI_KEY ||
+          (import.meta as any).env?.NEXT_PUBLIC_METALPRICEAPI_KEY || "";
+        const merged = await loadMergedPrices(from, to, key);
+        if (!ignore && merged.length) setRows(merged);
+      } catch (e) {
+        console.error("merged loader failed", e);
+      }
+    })();
     return () => { ignore = true; };
+  }, [startDate]);
+  return () => { ignore = true; };
   }, [startDate]);
   const autoTriedRef = useRef(false);
 
@@ -570,10 +589,29 @@ export default function App() {
 
   const xTickFormatter = (value: string) => dayjs(value).format('YYYY');
   const tooltipFormatter = (value: any, name: string) => {
-    if (name === 'Gold-Silver Ratio') return [Number(value).toFixed(2), name];
+    if (name === 'Gold->Silver ratio') return [Number(value).toFixed(2), name];
     return [fmtCurrency(Number(value), 2), name];
   };
 
+    // Load prices from CSV first; fill gaps from API (only missing dates)
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const from = startDate;
+        const to = (typeof dayjs !== "undefined" ? dayjs().format("YYYY-MM-DD") : new Date().toISOString().slice(0,10));
+        const key =
+          (typeof window !== "undefined" && (window as any).METAL_API_KEY) ||
+          (import.meta as any).env?.VITE_METALPRICEAPI_KEY ||
+          (import.meta as any).env?.NEXT_PUBLIC_METALPRICEAPI_KEY || "";
+        const merged = await loadMergedPrices(from, to, key);
+        if (!ignore && merged.length) setRows(merged);
+      } catch (e) {
+        console.error("merged loader failed", e);
+      }
+    })();
+    return () => { ignore = true; };
+  }, [startDate]);
   return (
     <div className="container">
       <div className="card">
@@ -699,7 +737,7 @@ export default function App() {
                   checked={showRatio}
                   onChange={(e) => setShowRatio(e.target.checked)}
                 />
-                <label>Gold-Silver Ratio</label>
+                <label>Gold->Silver ratio</label>
               </div>
             </div>
           </div>
@@ -779,7 +817,7 @@ export default function App() {
                   <Line
                     type="monotone"
                     dataKey="ratio"
-                    name="Gold-Silver Ratio"
+                    name="Gold->Silver ratio"
                     yAxisId="ratio"
                     dot={false}
                     stroke="rgba(107,114,128,0.25)"
@@ -863,6 +901,7 @@ export default function App() {
     </div>
   );
 }
+
 
 
 
