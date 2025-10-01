@@ -6,9 +6,10 @@ import { ErrorBoundary } from "./ErrorBoundary";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ErrorBoundary><div className="app"><div className="app"><div className="app"><div className="app"><App /></div></div></div></div></ErrorBoundary>
+    <ErrorBoundary><div className="app"><div className="app"><div className="app"><div className="app"><ErrorBoundary><App /></ErrorBoundary></div></div></div></div></ErrorBoundary>
   </React.StrictMode>
 );
+
 
 
 

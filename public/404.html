@@ -1,0 +1,14 @@
+﻿<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting…</title>
+    <meta http-equiv="refresh" content="0;url=/gold-silver-visualizer/">
+    <script>
+      // attempt to preserve the path for client-side routing
+      const p = location.pathname.replace(/^\/gold-silver-visualizer/, "");
+      location.replace("/gold-silver-visualizer/" + (p.startsWith("/") ? p.slice(1) : p) + location.search + location.hash);
+    </script>
+  </head>
+  <body>Redirecting…</body>
+</html>
