@@ -453,6 +453,27 @@ export default function App() {
   const [showRatio, setShowRatio] = useState(false);
 
   const [errorMsg, setErrorMsg] = useState<string>('');
+  // Load prices: CSV first, then fill gaps from MetalpriceAPI (only missing dates)
+  useEffect(() => {
+    let ignore = false;
+    (async () => {
+      try {
+        const from = startDate;
+        const to = (typeof dayjs !== 'undefined' ? dayjs().format('YYYY-MM-DD') : new Date().toISOString().slice(0,10));
+        // Try reading API key from env or window; ok if empty (then we skip API)
+        const key =
+          (typeof window !== 'undefined' && (window as any).METAL_API_KEY) ||
+          (import.meta as any).env?.VITE_METALPRICEAPI_KEY ||
+          (import.meta as any).env?.NEXT_PUBLIC_METALPRICEAPI_KEY ||
+          '';
+        const merged = await loadMergedPrices(from, to, key);
+        if (!ignore && merged.length) setRows(merged);
+      } catch (e) {
+        console.error('merged loader failed', e);
+      }
+    })();
+    return () => { ignore = true; };
+  }, [startDate]);
   const autoTriedRef = useRef(false);
 
   // Data bootstrapping: cache â†’ /public/data â†’ API (for gaps)
@@ -842,4 +863,6 @@ export default function App() {
     </div>
   );
 }
+
+
 
