@@ -12,18 +12,18 @@ export class ErrorBoundary extends React.Component<Props, State> {
     return { hasError: true, error };
   }
   componentDidCatch(error: any, info: any) {
-    console.error("ErrorBoundary caught", error, info);
+    console.error("ErrorBoundary caught:", error, info);
   }
   render() {
     if (this.state.hasError) {
       return (
         <div style={{
-          maxWidth: 960, margin: "24px auto", padding: "16px",
-          borderRadius: 12, border: "1px solid #ffd4cc", background: "#fff3f0",
-          color: "#7a1a00", fontFamily: "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
+          maxWidth: 980, margin: "24px auto", padding: 16,
+          background: "#fff3f0", color: "#7a1a00",
+          border: "1px solid #ffd4cc", borderRadius: 12, fontFamily: "system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial"
         }}>
-          <b>Something went wrong.</b>
-          <pre style={{ whiteSpace: "pre-wrap" }}>{String(this.state.error || "")}</pre>
+          <b>Something went wrong while rendering the app.</b>
+          <pre style={{ whiteSpace: "pre-wrap", marginTop: 10 }}>{String(this.state.error || "")}</pre>
           <p>Open the browser Console for details.</p>
         </div>
       );
