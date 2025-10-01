@@ -17,7 +17,7 @@ installGlobalErrorHooks();
 const rootEl = document.getElementById("root");
 if (!rootEl) {
   const msg = "Root element not found (id='root').";
-  document.body.innerHTML = "<pre style=\\"padding:16px\\">" + msg + "</pre>";
+  document.body.innerHTML = `<pre style="padding:16px">${msg}</pre>`;
   throw new Error(msg);
 }
 
@@ -38,3 +38,4 @@ ReactDOM.createRoot(rootEl).render(
     </div>
   </ErrorBoundary>
 );
+
