@@ -679,7 +679,7 @@ export default function App() {
             {/* Ratio inputs */}
             <div className="border">
               <div className="row">
-                <label>Goldâ†’Silver ratio</label>
+                <label>Gold-Silver Ratio</label>
                 <input
                   type="number"
                   step="0.1"
@@ -737,7 +737,7 @@ export default function App() {
                   checked={showRatio}
                   onChange={(e) => setShowRatio(e.target.checked)}
                 />
-                <label>Gold->Silver ratio</label>
+                <label>Gold-Silver Ratio</label>
               </div>
             </div>
           </div>
@@ -901,6 +901,7 @@ export default function App() {
     </div>
   );
 }
+
 
 
 
