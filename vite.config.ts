@@ -1,9 +1,8 @@
-
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+// vite.config.ts
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc'; // or '@vitejs/plugin-react' if you used that
 
 export default defineConfig({
   plugins: [react()],
-  server: { port: 5173 },
-  build: { outDir: 'dist' }
-})
+  base: '/gold-silver-visualizer/', // <-- MUST match your repo name
+});
