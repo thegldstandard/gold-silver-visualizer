@@ -20,23 +20,26 @@ function parseCsv(csv: string): Row[] {
     const c = lines[i].split(",");
     if (c.length < 3) continue;
     const date = toISO(c[iDate].trim());
-    const gold = Number(c[iGold]); const silver = Number(c[iSilver]);
+    const gold = Number(c[iGold]);
+    const silver = Number(c[iSilver]);
     if (!date || !Number.isFinite(gold) || !Number.isFinite(silver)) continue;
     out.push({ date, gold, silver });
   }
   const map = new Map(out.map(r => [r.date, r]));
   return [...map.values()].sort((a,b)=>a.date.localeCompare(b.date));
 }
+
 function toISO(s: string): string | null {
   const a = s.trim();
   if (/^\d{4}-\d{2}-\d{2}$/.test(a)) return a;
   const m = a.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
   if (m) {
-    const p1=+m[1], p2=+m[2], y=+m[3];
+    const p1 = +m[1], p2 = +m[2], y = +m[3];
     const [mo,d] = (p1>12) ? [p2,p1] : (p2>12) ? [p1,p2] : [p1,p2];
     return `${y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
   }
-  const dt = new Date(a); return isNaN(dt.getTime()) ? null : dt.toISOString().slice(0,10);
+  const dt = new Date(a);
+  return isNaN(dt.getTime()) ? null : dt.toISOString().slice(0,10);
 }
 
 async function fetchMetalAPI(start: string, end: string, apiKey: string): Promise<Row[]> {
@@ -44,7 +47,8 @@ async function fetchMetalAPI(start: string, end: string, apiKey: string): Promis
   const url = `https://api.metalpriceapi.com/v1/timeframe?api_key=${apiKey}&start_date=${start}&end_date=${end}&base=USD&currencies=XAU,XAG`;
   const r = await fetch(url);
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  const j = await r.json(); if (!j || !j.rates) return [];
+  const j = await r.json();
+  if (!j || !j.rates) return [];
   const out: Row[] = [];
   for (const d of Object.keys(j.rates).sort()) {
     const rr = (j.rates as any)[d];
@@ -63,13 +67,13 @@ function enumerateDates(start: string, end: string): string[] {
   return out;
 }
 function prevDay(iso: string) { return new Date(new Date(iso+'T00:00:00Z').getTime()-86400000).toISOString().slice(0,10); }
-function missingRanges(required: string[], have: Set<string>): Array<[string,string]> {
+function missingRanges(need: string[], have: Set<string>): Array<[string,string]> {
   const out: Array<[string,string]> = []; let start: string | null = null;
-  for (const d of required) {
+  for (const d of need) {
     if (!have.has(d) && start == null) start = d;
     if (have.has(d) && start != null) { out.push([start, prevDay(d)]); start = null; }
   }
-  if (start != null) out.push([start, required.at(-1)!]);
+  if (start != null) out.push([start, need.at(-1)!]);
   return out;
 }
 
@@ -93,5 +97,8 @@ export async function loadMergedPrices(start: string, end: string, apiKey?: stri
       }
     }
   }
-  return [...map.values()].filter(r=>r.date>=start && r.date<=end).sort((a,b)=>a.date.localeCompare(b.date));
+
+  return [...map.values()]
+    .filter(r => r.date >= start && r.date <= end)
+    .sort((a,b)=>a.date.localeCompare(b.date));
 }
