@@ -1,8 +1,7 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc'; // If you installed '@vitejs/plugin-react', change this import accordingly.
+﻿import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
 
 export default defineConfig({
   plugins: [react()],
-  // IMPORTANT: this must match your repo name exactly for GitHub Pages
-  base: '/gold-silver-visualizer/',
+  base: '/gold-silver-visualizer/', // <-- repo name
 });
