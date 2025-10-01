@@ -16,7 +16,7 @@ import * as XLSX from 'xlsx';
  * App â€“ Value Chart + Simple Toggles + Stats Boxes (FULL UPDATED)
  * - VALUE lines only (USD): Gold (buy & hold), Silver (buy & hold), My Portfolio.
  * - Optional translucent Goldâ€“Silver Ratio overlay (purely visual; does NOT change value scale).
- * - Four toggles only: Gold Value, Silver Value, My Portfolio, Gold-Silver ratio.
+ * - Four toggles only: Gold Value, Silver Value, My Portfolio, Gold-Silver Ratio.
  * - Auto-loads /public/data/prices.csv (or .xlsx). Falls back to MetalpriceAPI for gaps.
  * - Caches history in localStorage to reduce API calls and rate limits.
  * - Yâ€‘axis never drops below 0.
@@ -26,16 +26,15 @@ import * as XLSX from 'xlsx';
 
 type Row = { date: string; gold: number; silver: number };
 type SimPoint = Row & {
-  ratio: number; // gold / silver (price ratio)
+  ratio: number; // Gold-Silver (price ratio)
   portfolio: number; // strategy value (USD)
-  goldValue: number; // buy & hold value if stayed in gold
-  silverValue: number; // buy & hold value if stayed in silver
+  goldValue: number; // buy & hold value if stayed in Gold-SilverValue: number; // buy & hold value if stayed in silver
   portfolioPct: number; // % gain of portfolio vs startAmount
   goldPct: number; // % gain of gold buy & hold
   silverPct: number; // % gain of silver buy & hold
   diffVsGold: number; // (pp) portfolioPct - goldPct
   diffVsSilver: number; // (pp) portfolioPct - silverPct
-  heldMetal: 'Gold' | 'Silver';
+  heldMetal: 'Gold-Silver';
   heldOunces: number;
   switched?: 'Gâ†’S' | 'Sâ†’G';
 };
@@ -197,7 +196,7 @@ async function loadMetalPriceAPI(start: string, end: string, apiKey: string): Pr
       const gold = r.USDXAU ?? (r.XAU ? 1 / r.XAU : undefined);
       const silver = r.USDXAG ?? (r.XAG ? 1 / r.XAG : undefined);
       if (Number.isFinite(gold) && Number.isFinite(silver)) {
-        rows.push({ date: d, gold: Number(gold), silver: Number(silver) });
+        rows.push({ date: d, gold: Number(Gold-Silver: Number(silver) });
       }
     }
     return rows;
@@ -208,7 +207,7 @@ async function loadMetalPriceAPI(start: string, end: string, apiKey: string): Pr
   const silver = r.USDXAG ?? (r.XAG ? 1 / r.XAG : undefined);
   const date = j.date || end || dayjs().format('YYYY-MM-DD');
   if (Number.isFinite(gold) && Number.isFinite(silver)) {
-    return [{ date, gold: Number(gold), silver: Number(silver) }];
+    return [{ date, gold: Number(Gold-Silver: Number(silver) }];
   }
   throw new Error('MetalpriceAPI response lacked usable XAU/XAG fields');
 }
@@ -349,7 +348,7 @@ function simulate(
   rows: Row[],
   startDate: string,
   endDate: string,
-  startMetal: 'Gold' | 'Silver',
+  startMetal: 'Gold-Silver',
   startAmount: number,
   g2s?: number,
   s2g?: number,
@@ -361,7 +360,7 @@ function simulate(
   const noTriggers =
     (g2s == null || Number.isNaN(g2s)) && (s2g == null || Number.isNaN(s2g));
 
-  let heldMetal: 'Gold' | 'Silver' = startMetal;
+  let heldMetal: 'Gold-Silver' = startMetal;
   let ounces =
     heldMetal === 'Gold' ? startAmount / first.gold : startAmount / first.silver;
 
@@ -441,12 +440,12 @@ export default function App() {
   const [endDate, setEndDate] = useState<string>(() =>
     dayjs().format('YYYY-MM-DD'),
   );
-  const [startMetal, setStartMetal] = useState<'Gold' | 'Silver'>('Gold');
+  const [startMetal, setStartMetal] = useState<'Gold-Silver'>('Gold');
   const [startAmount, setStartAmount] = useState<number>(10000);
   const [g2s, setG2S] = useState<string>('85');
   const [s2g, setS2G] = useState<string>('75');
 
-  // Toggles (defaults: gold/silver/portfolio ON, ratio OFF)
+  // Toggles (defaults: Gold-Silver/portfolio ON, ratio OFF)
   const [showGold, setShowGold] = useState(true);
   const [showSilver, setShowSilver] = useState(true);
   const [showPortfolio, setShowPortfolio] = useState(true);
@@ -589,7 +588,7 @@ export default function App() {
 
   const xTickFormatter = (value: string) => dayjs(value).format('YYYY');
   const tooltipFormatter = (value: any, name: string) => {
-    if (name === 'Gold-Silver ratio') return [Number(value).toFixed(2), name];
+    if (name === 'Gold-Silver Ratio') return [Number(value).toFixed(2), name];
     return [fmtCurrency(Number(value), 2), name];
   };
 
@@ -616,7 +615,7 @@ export default function App() {
     <div className="container">
       <div className="card">
         <div className="card-header">
-          <div className="card-title">Gold & Silver Strategy Visualizer</div>
+          <div className="card-title">Gold-Silver Strategy Visualizer</div>
         </div>
 
         <div className="card-content">
@@ -679,7 +678,7 @@ export default function App() {
             {/* Ratio inputs */}
             <div className="border">
               <div className="row">
-                <label>Gold-Silver ratio</label>
+                <label>Gold-Silver Ratio</label>
                 <input
                   type="number"
                   step="0.1"
@@ -737,7 +736,7 @@ export default function App() {
                   checked={showRatio}
                   onChange={(e) => setShowRatio(e.target.checked)}
                 />
-                <label>Gold-Silver ratio</label>
+                <label>Gold-Silver Ratio</label>
               </div>
             </div>
           </div>
@@ -817,7 +816,7 @@ export default function App() {
                   <Line
                     type="monotone"
                     dataKey="ratio"
-                    name="Gold-Silver ratio"
+                    name="Gold-Silver Ratio"
                     yAxisId="ratio"
                     dot={false}
                     stroke="rgba(107,114,128,0.25)"
@@ -901,6 +900,7 @@ export default function App() {
     </div>
   );
 }
+
 
 
 

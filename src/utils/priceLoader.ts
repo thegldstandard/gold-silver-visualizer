@@ -1,10 +1,14 @@
 ﻿export type Row = { date: string; gold: number; silver: number };
 
 async function loadCsvFromPublic(): Promise<Row[]> {
-  const url = `${import.meta.env.BASE_URL}data/prices.csv`;
-  const res = await fetch(url, { cache: "no-cache" });
-  if (!res.ok) return [];
-  return parseCsv(await res.text());
+  try {
+    const url = `${import.meta.env.BASE_URL}data/prices.csv`;
+    const res = await fetch(url, { cache: "no-cache" });
+    if (!res.ok) return [];
+    return parseCsv(await res.text());
+  } catch {
+    return [];
+  }
 }
 
 function parseCsv(csv: string): Row[] {
@@ -46,8 +50,8 @@ async function fetchMetalAPI(start: string, end: string, apiKey: string): Promis
   if (!apiKey) return [];
   const url = `https://api.metalpriceapi.com/v1/timeframe?api_key=${apiKey}&start_date=${start}&end_date=${end}&base=USD&currencies=XAU,XAG`;
   const r = await fetch(url);
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  const j = await r.json();
+  if (!r.ok) return [];
+  const j = await r.json().catch(()=>null);
   if (!j || !j.rates) return [];
   const out: Row[] = [];
   for (const d of Object.keys(j.rates).sort()) {
@@ -80,6 +84,7 @@ function missingRanges(need: string[], have: Set<string>): Array<[string,string]
 export async function loadMergedPrices(start: string, end: string, apiKey?: string): Promise<Row[]> {
   const csv = await loadCsvFromPublic().catch(()=>[]);
   const map = new Map<string, Row>(csv.map(r => [r.date, r]));
+
   const required = enumerateDates(start, end);
   const have = new Set(required.filter(d => map.has(d)));
   const gaps = missingRanges(required, have);
