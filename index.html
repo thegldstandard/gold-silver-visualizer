@@ -1,4 +1,4 @@
-
+﻿
 <!doctype html>
 <html lang="en">
   <head>
@@ -9,6 +9,43 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+      <script>
+    // --- Boot probe: show errors before React mounts ---
+    (function () {
+      window.__boot_ok__ = false;
+      function show(msg) {
+        try {
+          if (window.__boot_ok__) return;
+          var b = document.createElement("div");
+          b.style.position = "fixed";
+          b.style.left = "12px";
+          b.style.right = "12px";
+          b.style.bottom = "12px";
+          b.style.zIndex = "99999";
+          b.style.background = "#fff3f0";
+          b.style.border = "1px solid #ffd4cc";
+          b.style.color = "#7a1a00";
+          b.style.padding = "12px 14px";
+          b.style.borderRadius = "10px";
+          b.style.fontFamily = "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial";
+          b.style.boxShadow = "0 6px 18px rgba(0,0,0,.15)";
+          b.innerHTML =
+            "<b>Boot error</b> &nbsp;— check the Console for details.<br/><pre style='white-space:pre-wrap;margin:8px 0 0;'>" +
+            String(msg || "Unknown error") +
+            "</pre>";
+          document.body.appendChild(b);
+        } catch (_) {}
+      }
+      window.addEventListener("error", function (e) {
+        show((e.error && e.error.stack) || e.message);
+      });
+      window.addEventListener("unhandledrejection", function (e) {
+        show((e.reason && (e.reason.stack || e.reason.message)) || e.reason);
+      });
+      console.log("[probe] index.html loaded");
+    })();
+  </script>
+
   </body>
 </html>
+
