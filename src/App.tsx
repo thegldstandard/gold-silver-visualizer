@@ -195,8 +195,7 @@ async function loadMetalPriceAPI(start: string, end: string, apiKey: string): Pr
       const r = (j.rates as any)[d];
       const gold = r.USDXAU ?? (r.XAU ? 1 / r.XAU : undefined);
       const silver = r.USDXAG ?? (r.XAG ? 1 / r.XAG : undefined);
-      if (Number.isFinite(gold) && Number.isFinite(silver)) {
-        rows.push({ date: d, gold: Number(Gold-Silver: Number(silver) });
+      if (Number.isFinite(gold) && Number.isFinite(silver)) { rows.push({ date: d, gold: Number(gold), silver: Number(silver) }); });
       }
     }
     return rows;
@@ -206,8 +205,7 @@ async function loadMetalPriceAPI(start: string, end: string, apiKey: string): Pr
   const gold = r.USDXAU ?? (r.XAU ? 1 / r.XAU : undefined);
   const silver = r.USDXAG ?? (r.XAG ? 1 / r.XAG : undefined);
   const date = j.date || end || dayjs().format('YYYY-MM-DD');
-  if (Number.isFinite(gold) && Number.isFinite(silver)) {
-    return [{ date, gold: Number(Gold-Silver: Number(silver) }];
+  if (Number.isFinite(gold) && Number.isFinite(silver)) { rows.push({ date: d, gold: Number(gold), silver: Number(silver) }); }];
   }
   throw new Error('MetalpriceAPI response lacked usable XAU/XAG fields');
 }
@@ -900,6 +898,7 @@ export default function App() {
     </div>
   );
 }
+
 
 
 
