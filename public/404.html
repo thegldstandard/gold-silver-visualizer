@@ -1,14 +1,13 @@
 ﻿<!doctype html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>Redirecting…</title>
-    <meta http-equiv="refresh" content="0;url=/gold-silver-visualizer/">
-    <script>
-      // attempt to preserve the path for client-side routing
-      const p = location.pathname.replace(/^\/gold-silver-visualizer/, "");
-      location.replace("/gold-silver-visualizer/" + (p.startsWith("/") ? p.slice(1) : p) + location.search + location.hash);
-    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gold & Silver Visualizer</title>
   </head>
-  <body>Redirecting…</body>
+  <body>
+    <div id="root"></div>
+    <!-- Vite discovers the app via this module entry -->
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
