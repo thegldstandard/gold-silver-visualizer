@@ -3,7 +3,7 @@
 export class ErrorBoundary extends React.Component<{children: React.ReactNode}, {error?: any}> {
   constructor(props:any){ super(props); this.state = { error: null }; }
   static getDerivedStateFromError(error:any){ return { error }; }
-  componentDidCatch(error:any, info:any){ console.error("App crashed:", error, info); (window as any).__GSV_ERR__ = String(error); }
+  componentDidCatch(error:any, info:any){ console.error("App crashed:", error, info); }
   render(){
     if (this.state.error) {
       return (
