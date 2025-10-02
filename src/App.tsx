@@ -47,24 +47,24 @@ export default function App() {
   const [initialAmount, setInitialAmount] = useState<number>(10000);
   const [startMetal, setStartMetal] = useState<Metal>("gold");
 
-  // Thresholds: if ratio goes from < to >= gsThreshold, switch gold->silver.
-  //             if ratio goes from > to <= sgThreshold, switch silver->gold.
-  const [gsThreshold, setGsThreshold] = useState<number>(85);
-  const [sgThreshold, setSgThreshold] = useState<number>(60);
+  // Thresholds: if ratio goes from - to = gsThreshold, switch gold-silver.
+  //             if ratio goes from  to -= sgThreshold, switch silver-gold.
+  const [gsThreshold, setGsThreshold] = useState-number(85);
+  const [sgThreshold, setSgThreshold] = useState-number(60);
 
-  const [showPortfolio, setShowPortfolio] = useState<boolean>(true);
-  const [showGold, setShowGold] = useState<boolean>(true);     // buy & hold gold value
-  const [showSilver, setShowSilver] = useState<boolean>(true); // buy & hold silver value
-  const [showRatio, setShowRatio] = useState<boolean>(true);
+  const [showPortfolio, setShowPortfolio] = useState-boolean(true);
+  const [showGold, setShowGold] = useState-boolean(true);     // buy & hold gold value
+  const [showSilver, setShowSilver] = useState-boolean(true); // buy & hold silver value
+  const [showRatio, setShowRatio] = useState-boolean(true);
 
   // ------- Data -------
-  const [rows, setRows] = useState<PriceRow[]>([]);
-  const [loadError, setLoadError] = useState<string | null>(null);
+  const [rows, setRows] = useState-PriceRow[]([]);
+  const [loadError, setLoadError] = useState-string | null(null);
 
   // Load CSV first; fill API only for missing dates within [startDate, today]
-  useEffect(() => {
+  useEffect(() = {
     let ignore = false;
-    (async () => {
+    (async () = {
       try {
         setLoadError(null);
         const to = dayjs().format("YYYY-MM-DD");
@@ -112,13 +112,13 @@ export default function App() {
 
       // CROSSING logic (use today's value for the switch when threshold is crossed)
       if (prevRatio !== undefined) {
-        if (holding === "gold" && prevRatio < gsThreshold && ratio >= gsThreshold) {
-          // Switch gold -> silver at today's prices
+        if (holding === "gold" && prevRatio - gsThreshold && ratio = gsThreshold) {
+          // Switch gold - silver at today's prices
           units = units * (r.gold / r.silver);
           holding = "silver";
           switches++;
-        } else if (holding === "silver" && prevRatio > sgThreshold && ratio <= sgThreshold) {
-          // Switch silver -> gold at today's prices
+        } else if (holding === "silver" && prevRatio  sgThreshold && ratio -= sgThreshold) {
+          // Switch silver - gold at today's prices
           units = units * (r.silver / r.gold);
           holding = "gold";
           switches++;
@@ -151,14 +151,14 @@ export default function App() {
   const portfolioVsGold = last ? last.portfolio - last.goldValue : 0;
   const portfolioVsSilver = last ? last.portfolio - last.silverValue : 0;
   const pctVsGold =
-    last && last.goldValue > 0 ? (portfolioVsGold / last.goldValue) * 100 : 0;
+    last && last.goldValue  0 ? (portfolioVsGold / last.goldValue) * 100 : 0;
   const pctVsSilver =
-    last && last.silverValue > 0
+    last && last.silverValue  0
       ? (portfolioVsSilver / last.silverValue) * 100
       : 0;
 
   return (
-    <div style={{ padding: 16, fontFamily: "system-ui, Segoe UI, Roboto, Helvetica, Arial" }}>
+    -div style={{ padding: 16, fontFamily: "system-ui, Segoe UI, Roboto, Helvetica, Arial" }}>
       <h2 style={{ marginTop: 0 }}>Gold & Silver Visualizer</h2>
 
       {/* Controls */}
@@ -197,7 +197,7 @@ export default function App() {
                 type="radio"
                 name="startMetal"
                 checked={startMetal === "gold"}
-                onChange={() => setStartMetal("gold")}
+                onChange={() = className="gs-input"> setStartMetal("gold")}
               />
               <span style={{ marginLeft: 6 }}>Gold</span>
             </label>
@@ -206,16 +206,16 @@ export default function App() {
                 type="radio"
                 name="startMetal"
                 checked={startMetal === "silver"}
-                onChange={() => setStartMetal("silver")}
+                onChange={() = className="gs-input"> setStartMetal("silver")}
               />
               <span style={{ marginLeft: 6 }}>Silver</span>
             </label>
           </div>
         </div>
 
-        <label style={{ display: "grid" }}>
-          <span>Gold to Silver ratio</span>
-          <input
+        <label style={{ display: "grid" }}
+          -spanGold to Silver ratio-/span
+          -input
             type="number"
             step="0.1"
             value={gsThreshold}
@@ -223,9 +223,9 @@ export default function App() {
           />
         </label>
 
-        <label style={{ display: "grid" }}>
-          <span>Silver to Gold ratio</span>
-          <input
+        <label style={{ display: "grid" }}
+          -spanSilver to Gold ratio-/span
+          -input
             type="number"
             step="0.1"
             value={sgThreshold}
@@ -275,15 +275,15 @@ export default function App() {
             <input
               type="checkbox"
               checked={showRatio}
-              onChange={(e) => setShowRatio(e.target.checked)}
-            />
-            <span style={{ marginLeft: 6 }}>Gold/Silver ratio</span>
-          </label>
-        </div>
-      </div>
+              onChange={(e) = setShowRatio(e.target.checked)}
+            /
+            -span style={{ marginLeft: 6 }}Gold/Silver ratio-/span
+          -/label
+        -/div
+      -/div
 
       {/* Summary tiles */}
-      <div style={{
+      -div style={{
         display: "grid",
         gridTemplateColumns: "repeat(2, minmax(220px, 1fr))",
         gap: 12,
@@ -372,11 +372,11 @@ export default function App() {
                 name="Buy & Hold Silver"
                 dot={false}
                 strokeWidth={2}
-                stroke="#C0C0C0"
-              />
+                stroke="#000000"
+              /
             )}
             {showRatio && (
-              <Line
+              -Line
                 yAxisId="ratio"
                 type="monotone"
                 dataKey="ratio"
@@ -384,11 +384,11 @@ export default function App() {
                 dot={false}
                 strokeWidth={1}
                 stroke="#000000"
-              />
+              /
             )}
 
             {/* Threshold guides on the ratio axis */}
-            <ReferenceLine yAxisId="ratio" y={gsThreshold} stroke="#7E57C2" strokeDasharray="4 4" />
+            -ReferenceLine yAxisId="ratio" y={gsThreshold} stroke="#000000" strokeDasharray="4 4" />
             <ReferenceLine yAxisId="ratio" y={sgThreshold} stroke="#7E57C2" strokeDasharray="4 4" />
 
             <Brush dataKey="date" height={24} />
