@@ -311,8 +311,8 @@ export default function App() {
 
       {/* Chart (single screen height, no scroll) */}
       <div style={{ height: 520, border: "1px solid #eee", borderRadius: 6 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 10, right: 24, left: 8, bottom: 0 }}>
+        <ResponsiveContainer width="100%" height="100%" className="chart-wrap">
+          <LineChart data={data} margin={{ top: 10, right: 24, left: 8, bottom: 0 }} style={{ background: "#ffffff" }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
               dataKey="date"
@@ -350,7 +350,7 @@ export default function App() {
                 name="My Portfolio"
                 dot={false}
                 strokeWidth={2}
-                stroke="#4E79A7"
+                stroke="#e53935"
               />
             )}
             {showGold && (
@@ -383,7 +383,7 @@ export default function App() {
                 name="Gold/Silver ratio"
                 dot={false}
                 strokeWidth={1}
-                stroke="#7E57C2"
+                stroke="#000000"
               />
             )}
 
@@ -405,5 +405,6 @@ export default function App() {
     </div>
   );
 }
+
 
 

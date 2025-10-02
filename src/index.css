@@ -47,3 +47,43 @@ body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,-a
 @media (max-width: 1100px){ .stat-grid{grid-template-columns:repeat(3,1fr)} }
 @media (max-width: 740px){ .controls{grid-template-columns:repeat(6,1fr)}
   .ctrl{grid-column:span 3} .stat-grid{grid-template-columns:1fr} }
+
+/* === Visual unify (cards + switches) === */
+.stat-row{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin:12px 0 10px }
+.card{
+  background: linear-gradient(180deg,#14171c,#191d23);
+  border:1px solid #222831;
+  border-radius:14px;
+  padding:14px 16px;
+}
+.card h4{ margin:0 0 6px; font-weight:600; color:#9aa6b2; font-size:13px }
+.card .big{ font-size:20px; font-weight:700; letter-spacing:.2px }
+.card .big .pct{ color:#19d27e; opacity:.95; font-weight:700; margin-left:6px }
+
+/* Make switches look like cards (same design/color) */
+.switches{
+  display:flex; flex-wrap:wrap; gap:14px;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid #222831;
+  background: linear-gradient(180deg,#14171c,#191d23);
+}
+.switches label{ display:flex; gap:8px; align-items:center; font-size:13px; color:#e8ecf1 }
+.switches input[type="checkbox"]{ width:16px; height:16px; accent-color:#3aa0ff }
+
+/* Chart container: white background */
+.chart-wrap{
+  background:#ffffff;
+  border:1px solid #222831;
+  border-radius:14px;
+  padding:8px 6px 6px;
+}
+
+/* Light grid on white */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line{ stroke:#e5e7eb !important }
+
+/* Responsive */
+@media (max-width:880px){
+  .stat-row{ grid-template-columns:1fr }
+}
